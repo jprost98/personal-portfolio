@@ -3,48 +3,535 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+
+const recentPosts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const skills = [
+  { category: "Audit & GRC", items: ["IT Audit", "SOX Compliance", "NIST CSF/RMF", "COBIT", "GDPR / CCPA", "Risk Management"] },
+  { category: "Security Ops", items: ["Vulnerability Assessment", "SIEM (Splunk / Wazuh)", "Rapid7", "Nessus", "IAM", "Threat Analysis"] },
+  { category: "Cloud & Tools", items: ["Microsoft Azure", "AWS", "Docker", "Python", "Power BI", "Jira"] },
+];
+
+const experience = [
+  {
+    title: "Internal IT Auditor",
+    company: "GreenSky, LLC",
+    period: "Dec 2025 – Present",
+    location: "Atlanta, GA",
+    bullets: [
+      "Conduct IT general controls (ITGC) and application controls audits for SOX compliance.",
+      "Assess cybersecurity posture across cloud infrastructure and SaaS platforms.",
+      "Automate audit workflows using Python and AI-assisted tooling.",
+    ],
+  },
+  {
+    title: "Senior IS Auditor",
+    company: "State of Georgia — Dept. of Audits & Accounts",
+    period: "Apr 2022 – Dec 2025",
+    location: "Atlanta, GA",
+    bullets: [
+      "Led information systems audits across state agencies for compliance with NIST and COBIT frameworks.",
+      "Performed vulnerability assessments using Nessus and Rapid7; managed findings through remediation.",
+      "Developed audit automation scripts in Python, reducing manual review hours by ~30%.",
+      "Managed identity & access management (IAM) reviews including privileged access audits.",
+    ],
+  },
+  {
+    title: "Systems Analyst / Bench Technician",
+    company: "Athens Micro",
+    period: "Jul 2021 – Apr 2022",
+    location: "Athens, GA",
+    bullets: [
+      "Diagnosed and resolved hardware/software issues for enterprise and SMB clients.",
+      "Administered endpoint security tools and managed patch compliance.",
+    ],
+  },
+];
+
+const certifications = [
+  { name: "ISC2 Certified in Cybersecurity (CC)", status: "Active" },
+  { name: "CompTIA CySA+", status: "In Progress" },
+];
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-					>read the docs
-				</a> or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out <a
-					href="https://github.com/Charca/astro-blog-template"
-					>astro-blog-template
-				</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main>
+
+      <!-- ── Hero ─────────────────────────────────────────── -->
+      <section class="hero">
+        <div class="hero-eyebrow">
+          <span class="status-dot"></span>
+          <span>Available for opportunities</span>
+        </div>
+        <h1>
+          Justin <span class="accent">Prost</span>
+        </h1>
+        <p class="hero-role">IT Auditor &amp; Cybersecurity Specialist</p>
+        <p class="hero-bio">
+          4+ years delivering IT audit, GRC, and security operations across government and fintech.
+          Focused on translating complex risk into clear, actionable outcomes — and building
+          the tooling to do it faster.
+        </p>
+        <div class="hero-actions">
+          <a href="/about" class="btn-primary">About Me</a>
+          <a href="mailto:jprost98@gmail.com" class="btn-ghost">Get in Touch</a>
+        </div>
+      </section>
+
+      <!-- ── Skills ────────────────────────────────────────── -->
+      <section class="section">
+        <div class="section-header">
+          <span class="accent-line"></span>
+          <h2 class="section-title">Core Skills</h2>
+        </div>
+        <div class="skills-grid">
+          {skills.map(group => (
+            <div class="card skill-card">
+              <h3 class="skill-category">{group.category}</h3>
+              <ul class="skill-list">
+                {group.items.map(item => (
+                  <li><span class="tag">{item}</span></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ── Experience ─────────────────────────────────────── -->
+      <section class="section">
+        <div class="section-header">
+          <span class="accent-line"></span>
+          <h2 class="section-title">Experience</h2>
+        </div>
+        <div class="timeline">
+          {experience.map((job, i) => (
+            <div class="timeline-item">
+              <div class="timeline-marker"></div>
+              <div class="timeline-content card">
+                <div class="job-header">
+                  <div>
+                    <h3 class="job-title">{job.title}</h3>
+                    <p class="job-company">{job.company}</p>
+                  </div>
+                  <div class="job-meta">
+                    <span class="job-period">{job.period}</span>
+                    <span class="job-location">{job.location}</span>
+                  </div>
+                </div>
+                <ul class="job-bullets">
+                  {job.bullets.map(b => <li>{b}</li>)}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ── Certifications ─────────────────────────────────── -->
+      <section class="section">
+        <div class="section-header">
+          <span class="accent-line"></span>
+          <h2 class="section-title">Certifications</h2>
+        </div>
+        <div class="cert-grid">
+          {certifications.map(cert => (
+            <div class="card cert-card">
+              <span class={`cert-status ${cert.status === 'Active' ? 'active' : 'progress'}`}>
+                {cert.status}
+              </span>
+              <p class="cert-name">{cert.name}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ── Education ──────────────────────────────────────── -->
+      <section class="section">
+        <div class="section-header">
+          <span class="accent-line"></span>
+          <h2 class="section-title">Education</h2>
+        </div>
+        <div class="card edu-card">
+          <div class="edu-header">
+            <div>
+              <h3 class="edu-degree">B.S. Cybersecurity</h3>
+              <p class="edu-school">University of North Georgia</p>
+            </div>
+            <div class="edu-meta">
+              <span class="tag">GPA 3.4</span>
+              <span class="tag">Corps of Cadets</span>
+            </div>
+          </div>
+          <p class="edu-note">
+            Pursuing Texas A&amp;M School of Law — Cybersecurity MLS Program
+          </p>
+        </div>
+      </section>
+
+      <!-- ── Recent Posts ───────────────────────────────────── -->
+      {recentPosts.length > 0 && (
+        <section class="section">
+          <div class="section-header">
+            <span class="accent-line"></span>
+            <h2 class="section-title">Recent Posts</h2>
+          </div>
+          <div class="posts-grid">
+            {recentPosts.map(post => (
+              <a href={`/blog/${post.id}/`} class="card post-card">
+                <p class="post-date"><FormattedDate date={post.data.pubDate} /></p>
+                <h3 class="post-title">{post.data.title}</h3>
+                <p class="post-desc">{post.data.description}</p>
+                <span class="post-link">Read more →</span>
+              </a>
+            ))}
+          </div>
+          <div class="section-footer">
+            <a href="/blog" class="btn-ghost">All Posts →</a>
+          </div>
+        </section>
+      )}
+
+    </main>
+    <Footer />
+  </body>
 </html>
+
+<style>
+  /* ── Hero ─────────────────────────────────────────── */
+  .hero {
+    padding: 5rem 0 4rem;
+    max-width: 680px;
+  }
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .4; }
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5em, 6vw, 3.8em);
+    font-weight: 700;
+    margin-bottom: 0.15em;
+    letter-spacing: -.02em;
+  }
+  .hero h1 .accent { color: var(--accent); }
+
+  .hero-role {
+    font-size: 1.15em;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin: 0 0 1.2em;
+    letter-spacing: .01em;
+  }
+  .hero-bio {
+    font-size: 1em;
+    color: var(--text-secondary);
+    max-width: 560px;
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-size: 0.85em;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 0.65em 1.5em;
+    background: var(--accent);
+    color: var(--bg);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: opacity .2s;
+  }
+  .btn-primary:hover { opacity: .85; color: var(--bg); }
+
+  .btn-ghost {
+    font-size: 0.85em;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 0.65em 1.5em;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: border-color .2s, color .2s;
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  /* ── Sections ─────────────────────────────────────── */
+  .section { margin-bottom: 4rem; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-header .accent-line {
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: .01em;
+    margin: 0;
+  }
+  .section-footer {
+    margin-top: 1.25rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* ── Skills ──────────────────────────────────────── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .skill-card { padding: 1.25rem 1.5rem; }
+  .skill-category {
+    font-size: 0.78em;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.85rem;
+  }
+  .skill-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .skill-list li { display: inline-flex; }
+
+  /* ── Timeline ─────────────────────────────────────── */
+  .timeline { position: relative; padding-left: 1.5rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-item { position: relative; margin-bottom: 1.25rem; }
+  .timeline-marker {
+    position: absolute;
+    left: -1.5rem;
+    top: 1.5rem;
+    transform: translateX(-4px);
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-dim);
+  }
+
+  .timeline-content { padding: 1.25rem 1.5rem; }
+
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+  .job-title {
+    font-size: 1em;
+    font-weight: 700;
+    margin: 0 0 0.15em;
+    color: var(--text-primary);
+  }
+  .job-company {
+    font-size: 0.88em;
+    color: var(--accent);
+    margin: 0;
+  }
+  .job-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+  }
+  .job-period {
+    font-size: 0.78em;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: .02em;
+    white-space: nowrap;
+  }
+  .job-location {
+    font-size: 0.75em;
+    color: var(--text-muted);
+  }
+  .job-bullets {
+    margin: 0;
+    padding-left: 1.2em;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    line-height: 1.65;
+  }
+  .job-bullets li { margin-bottom: 0.35em; }
+
+  /* ── Certifications ──────────────────────────────── */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  .cert-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem 1.5rem;
+  }
+  .cert-status {
+    font-size: 0.7em;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    align-self: flex-start;
+  }
+  .cert-status.active {
+    background: rgba(0,212,255,.1);
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+  }
+  .cert-status.progress {
+    background: rgba(255,190,50,.07);
+    color: #fbbe32;
+    border: 1px solid rgba(255,190,50,.25);
+  }
+  .cert-name {
+    font-size: 0.95em;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-primary);
+  }
+
+  /* ── Education ───────────────────────────────────── */
+  .edu-card { padding: 1.5rem 1.75rem; }
+  .edu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+  .edu-degree {
+    font-size: 1.05em;
+    font-weight: 700;
+    margin: 0 0 0.15em;
+    color: var(--text-primary);
+  }
+  .edu-school {
+    font-size: 0.88em;
+    color: var(--accent);
+    margin: 0;
+  }
+  .edu-meta { display: flex; gap: 0.4rem; align-items: flex-start; flex-wrap: wrap; }
+  .edu-note {
+    font-size: 0.87em;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* ── Blog posts ──────────────────────────────────── */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    text-decoration: none;
+    color: inherit;
+    padding: 1.25rem 1.5rem;
+  }
+  .post-date {
+    font-size: 0.75em;
+    color: var(--text-muted);
+    margin: 0;
+    letter-spacing: .02em;
+  }
+  .post-title {
+    font-size: 1em;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+  .post-desc {
+    font-size: 0.87em;
+    color: var(--text-secondary);
+    margin: 0;
+    flex: 1;
+  }
+  .post-link {
+    font-size: 0.8em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Responsive ──────────────────────────────────── */
+  @media (max-width: 720px) {
+    .hero { padding: 3rem 0 2.5rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .job-header { flex-direction: column; }
+    .job-meta { align-items: flex-start; }
+    .edu-header { flex-direction: column; }
+    .timeline { padding-left: 1rem; }
+  }
+</style>
