@@ -2,7 +2,7 @@
 title: "How It All Started"
 description: "The journey that sparked my passion for technology."
 pubDate: "Aug 21, 2026"
-heroImage: "src\content\blog\first-computer.jpg"
+heroImage: "/first-computer.jpg"
 ---
 
 Like many people my age, I grew up playing video games. Over the years I owned a PlayStation 1, PlayStation 2, Game Boy Advance, and eventually an Xbox 360. We also had a desktop computer that my cousin built for our family when Windows 7 was still relatively new. Technology was always around me, but I never really understood how it worked behind the scenes.
